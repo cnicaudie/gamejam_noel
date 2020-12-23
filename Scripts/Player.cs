@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     // PRIVATE
     private float m_actionRange = 6;
+    private bool isDragging = false;
 
     // PROPERTIES
     [SerializeField]
@@ -32,6 +33,18 @@ public class Player : MonoBehaviour
         {
             Drag();
         }
+        else if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            isDragging = false;
+        }
+
+        if (isDragging)
+        {
+            m_Speed = 5f; // when the player is dragging, he slows a bit down
+        } else
+        {
+            m_Speed = 10f; // as soon as he can't drag, he gets its speed back
+        }
     }
 
     private void Light()
@@ -52,12 +65,12 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("Drag input detected and mobile light found");
 
-            m_Speed = 5f; // when the player is dragging, he slows a bit down
+            isDragging = true;
             mobileLight.dragTowards(this.transform.position);
         }
         else
         {
-            m_Speed = 10f; // as soon as he can't drag, he gets its speed back
+            isDragging = false;
         }
     }
 
