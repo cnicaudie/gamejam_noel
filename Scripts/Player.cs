@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    float m_actionRange = 6;    
+    //==========// ATTRIBUTES //==========//
+
+    // PRIVATE
+    private float m_actionRange = 6;
+
+    // PROPERTIES
+    [SerializeField]
+    private float m_speed = 10f;
+    public float m_Speed
+    {
+        get { return m_speed; }
+        set { m_speed = value; }
+    }
 
     //==========// METHODS //==========//
 
@@ -38,8 +50,14 @@ public class Player : MonoBehaviour
 
         if (IsInActionRange(mobileLight.gameObject))
         {
-            Debug.Log("Drag input detected and mobile light found");
+            //Debug.Log("Drag input detected and mobile light found");
+
+            m_Speed = 5f; // when the player is dragging, he slows a bit down
             mobileLight.dragTowards(this.transform.position);
+        }
+        else
+        {
+            m_Speed = 10f; // as soon as he can't drag, he gets its speed back
         }
     }
 

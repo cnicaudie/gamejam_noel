@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -10,8 +10,7 @@ public class PlayerMovement : MonoBehaviour
     // PUBLIC
     public CharacterController m_playerController;
     public Transform m_cameraTransform;
-
-    public float m_speed = 10f;
+    public Player m_player;
 
     // PRIVATE
     private float m_turnSmoothTime = 0.1f;
@@ -73,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = m_gSpeed;
 
             // And move the player using the Unity based Character Controller
-            m_playerController.Move(moveDirection * m_speed * Time.fixedDeltaTime);
+            m_playerController.Move(moveDirection * m_player.m_Speed * Time.fixedDeltaTime);
         }
         // If the player falls off the ground, we check its y position
         else if (transform.position.y < -10f)
@@ -86,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // We just apply the gravity
-            m_playerController.Move(new Vector3(0f, m_gSpeed, 0f) * m_speed * Time.fixedDeltaTime);
+            m_playerController.Move(new Vector3(0f, m_gSpeed, 0f) * m_player.m_Speed * Time.fixedDeltaTime);
         }
 
     }
