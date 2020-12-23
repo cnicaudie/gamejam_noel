@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    float m_actionRange = 6;    
 
     //==========// METHODS //==========//
 
@@ -14,41 +15,56 @@ public class Player : MonoBehaviour
         {
             Light();
         }
+
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            Drag();
+        }
     }
 
     private void Light()
     {
-        //Debug.Log("SEARCHING FOR A LIGHT...");
+        MobileLight mobileLight = getClosestLight();
 
-        // Gets all colliders within a radius
-        Collider[] lights = Physics.OverlapSphere(transform.position, 5);
-
-        // We go through each found colliders
-        foreach (Collider c in lights)
+        if (IsInActionRange(mobileLight.gameObject))
         {
-            // If one of them is a Light Orb
-            if (c.gameObject.CompareTag("LightOrb"))
+            mobileLight.toggleLight();
+        }
+    }
+
+    private void Drag()
+    {
+        MobileLight mobileLight = getClosestLight();
+
+        if (IsInActionRange(mobileLight.gameObject))
+        {
+            Debug.Log("Drag input detected and mobile light found");
+            mobileLight.dragTowards(this.transform.position);
+        }
+    }
+
+    public MobileLight getClosestLight()
+    {
+        float minDist = Mathf.Infinity;
+        MobileLight closestLight = null;
+
+        foreach (MobileLight moblight in FindObjectsOfType<MobileLight>())
+        {
+            float dist = (moblight.transform.position - transform.position).magnitude;
+
+            if(dist < minDist)
             {
-                //Debug.Log("FOUND THE LIGHT !");
-
-                // We go through the children to find the light to turn on/off
-                foreach (Transform child in c.gameObject.GetComponentsInChildren<Transform>(true))
-                {
-                    GameObject obj = child.gameObject;
-                    //Debug.Log(g.name);
-
-                    if (obj.name == "Point Light")
-                    {
-                        if (obj.activeSelf)
-                        {
-                            obj.SetActive(false);
-                        } else
-                        {
-                            obj.SetActive(true);
-                        }
-                    }                
-                }
+                minDist = dist;
+                closestLight = moblight;
             }
         }
+
+        return closestLight;
+    }
+
+    public bool IsInActionRange(GameObject go)
+    {
+        float dist = (go.transform.position - transform.position).magnitude;
+        return dist < m_actionRange;
     }
 }
