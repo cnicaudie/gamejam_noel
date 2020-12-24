@@ -7,8 +7,11 @@ public class Player : MonoBehaviour
     //==========// ATTRIBUTES //==========//
 
     // PRIVATE
-    private float m_actionRange = 6;
-    private bool isDragging = false;
+    private float m_actionRange = 3;
+    private bool m_resetingTeleport = false;
+
+    [SerializeField]
+    private bool m_isDragging = false;
 
     // PROPERTIES
     [SerializeField]
@@ -17,6 +20,14 @@ public class Player : MonoBehaviour
     {
         get { return m_speed; }
         set { m_speed = value; }
+    }
+
+    [SerializeField]
+    private bool m_canTeleport = true;
+    public bool m_CanTeleport
+    {
+        get { return m_canTeleport; }
+        set { m_canTeleport = value; }
     }
 
     //==========// METHODS //==========//
@@ -35,10 +46,16 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            isDragging = false;
+            m_isDragging = false;
         }
 
-        if (isDragging)
+        if (!m_canTeleport && !m_resetingTeleport)
+        {
+            m_resetingTeleport = true;
+            StartCoroutine("resetTeleport");
+        }
+
+        if (m_isDragging)
         {
             m_Speed = 5f; // when the player is dragging, he slows a bit down
         } else
@@ -47,34 +64,40 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool IsInActionRange(GameObject go)
+    {
+        float dist = (go.transform.position - transform.position).magnitude;
+        return dist < m_actionRange;
+    }
+
     private void Light()
     {
-        MobileLight mobileLight = getClosestLight();
+        MobileLight mobileLight = GetClosestLight();
 
         if (IsInActionRange(mobileLight.gameObject))
         {
-            mobileLight.toggleLight();
+            mobileLight.ToggleLight();
         }
     }
 
     private void Drag()
     {
-        MobileLight mobileLight = getClosestLight();
+        MobileLight mobileLight = GetClosestLight();
 
         if (IsInActionRange(mobileLight.gameObject))
         {
             //Debug.Log("Drag input detected and mobile light found");
 
-            isDragging = true;
-            mobileLight.dragTowards(this.transform.position);
+            m_isDragging = true;
+            mobileLight.DragTowards(this.transform.position);
         }
         else
         {
-            isDragging = false;
+            m_isDragging = false;
         }
     }
 
-    public MobileLight getClosestLight()
+    private MobileLight GetClosestLight()
     {
         float minDist = Mathf.Infinity;
         MobileLight closestLight = null;
@@ -93,9 +116,13 @@ public class Player : MonoBehaviour
         return closestLight;
     }
 
-    public bool IsInActionRange(GameObject go)
+    private IEnumerator resetTeleport()
     {
-        float dist = (go.transform.position - transform.position).magnitude;
-        return dist < m_actionRange;
+        Debug.Log("Reseting teleportation...");
+        yield return new WaitForSeconds(5f);
+        Debug.Log("Teleportation has been reset !");
+        m_resetingTeleport = false;
+        m_canTeleport = true;
     }
+
 }

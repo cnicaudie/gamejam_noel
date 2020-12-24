@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class Axis : Zone
 {
+    //==========// ATTRIBUTES //==========//
+
+    // BOUNDS OF THE ZONE
     [SerializeField]
     float m_minValue = 0;
     [SerializeField]
     float m_maxValue = 0;
+
+    // CURRENT POSITTION
     [SerializeField]
     float m_axisValue = 0;
+
+    // VECTOR REPRESENTATION
     [SerializeField]
     Vector3 m_axisVector = Vector3.zero;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //==========// METHODS //==========//
 
     public override Vector3 ProjectOnZoneSpace(Vector3 position)
     {
@@ -37,10 +34,10 @@ public class Axis : Zone
     /// <returns>true if the position belongs to the zone, false otherwise</returns>
     public override bool IsInZone(Vector3 position)
     {
-        float axisValue = ProjectOnZoneSpace(position - this.transform.position).magnitude;
         m_axisVector = ProjectOnZoneSpace(position - this.transform.position);
-        m_axisValue = axisValue;
-        if (axisValue <= m_maxValue && axisValue >= m_minValue)
+        m_axisValue = m_axisVector.magnitude;
+
+        if (m_axisValue <= m_maxValue && m_axisValue >= m_minValue)
         {
             return true;
         }
