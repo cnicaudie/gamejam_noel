@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     // PUBLIC
     public CharacterController m_playerController;
-    public Transform m_cameraTransform;
+    public Transform m_camera;
     public Player m_player;
 
     // PRIVATE
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
             // We get its target angle using maths (where its face is pointing)
             // See Brackeys tutorial to understand :
             // Link : https://www.youtube.com/watch?v=4HpC--2iowE&ab_channel=Brackeys
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + m_cameraTransform.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + m_camera.eulerAngles.y;
 
             // We use this new angle to have smooth rotations of the player
             // To understand, see link above
