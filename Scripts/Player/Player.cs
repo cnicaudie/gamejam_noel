@@ -1,10 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     //==========// ATTRIBUTES //==========//
+
+    // PUBLIC
+    public static Player m_instance; // singleton instance
 
     // PRIVATE
     private float m_actionRange = 3;
@@ -32,7 +35,12 @@ public class Player : MonoBehaviour
 
     //==========// METHODS //==========//
 
-    private void Update()
+    void Awake()
+    {
+        MakePlayerSingleton();
+    }
+
+    void Update()
     {
         // Press space to turn on/off a light ball
         if (Input.GetKeyDown(KeyCode.Space))
@@ -64,12 +72,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Makes sure the Player is a singleton in the whole game
+    /// </summary>
+    private void MakePlayerSingleton()
+    {
+        if (m_instance != null)
+        {
+            Destroy(gameObject); // if there is a second instance, we delete it
+        }
+        else
+        {
+            m_instance = this;
+            DontDestroyOnLoad(gameObject); // we keep the instance through each scene
+        }
+    }
     public bool IsInActionRange(GameObject go)
     {
         float dist = (go.transform.position - transform.position).magnitude;
         return dist < m_actionRange;
     }
 
+    /// <summary>
+    /// Sets the player position to the respawn position (start position of the current scene)
+    /// </summary>
+    public void SetToBasePosition()
+    {
+        Vector3 basePosition = FindObjectOfType<StartLevel>().GetStartPosition();
+        Vector3 offset = new Vector3(0f, 5f, 0f);
+        transform.position = basePosition + offset;
+    }
     private void Light()
     {
         MobileLight mobileLight = GetClosestLight();

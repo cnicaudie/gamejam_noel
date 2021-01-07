@@ -78,8 +78,7 @@ public class PlayerMovement : MonoBehaviour
         else if (transform.position.y < -10f)
         {
             // And we reset its position to avoid falling forever
-            // This based position can be replaced if needed
-            transform.position = new Vector3(17f, 6.5f, -40f);
+            m_player.SetToBasePosition();
         }
         // Otherwise, if the player isn't moving in any given direction
         else
