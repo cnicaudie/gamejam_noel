@@ -19,11 +19,13 @@ public class MobileLight : MonoBehaviour
         m_player = FindObjectOfType<Player>();
     }
 
+    /// <summary>
+    /// Moves the object towards the position in parameter
+    /// </summary>
+    /// <param name="position">Position of the player</param>
     public void DragTowards(Vector3 position)
     {
         Vector3 displacement = (position - transform.position) * m_player.m_Speed * Time.deltaTime;
-
-        //Debug.Log(m_zone.IsInZone(transform.position + m_zone.ProjectOnZoneSpace(displacement)));
 
         // Check if this movement will get the light object out of the zone
         if (m_zone.IsInZone(transform.position + m_zone.ProjectOnZoneSpace(displacement)))
@@ -34,8 +36,11 @@ public class MobileLight : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Turns on/off a light
+    /// </summary>
     public void ToggleLight()
     {
-        this.m_light.gameObject.SetActive(!this.m_light.gameObject.activeSelf);
+        m_light.gameObject.SetActive(!m_light.gameObject.activeSelf);
     }
 }

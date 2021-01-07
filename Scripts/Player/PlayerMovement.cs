@@ -45,6 +45,9 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
+    /// <summary>
+    /// Moves the player in the environment according to the user's inputs
+    /// </summary>
     private void MovePlayer()
     {
         // We get the wanted direction and normalize it

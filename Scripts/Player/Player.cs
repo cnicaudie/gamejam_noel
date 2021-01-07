@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -87,6 +87,12 @@ public class Player : MonoBehaviour
             DontDestroyOnLoad(gameObject); // we keep the instance through each scene
         }
     }
+
+    /// <summary>
+    /// Checks if the the GameObject in parameter is in the action range of the player
+    /// </summary>
+    /// <param name="go">The GameObject to interact with</param>
+    /// <returns>A boolean telling if the player can interact with the GameObject in parameter</returns>
     public bool IsInActionRange(GameObject go)
     {
         float dist = (go.transform.position - transform.position).magnitude;
@@ -102,6 +108,10 @@ public class Player : MonoBehaviour
         Vector3 offset = new Vector3(0f, 5f, 0f);
         transform.position = basePosition + offset;
     }
+
+    /// <summary>
+    /// [ACTION] Turn on a light if in action range of the player
+    /// </summary>
     private void Light()
     {
         MobileLight mobileLight = GetClosestLight();
@@ -112,16 +122,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// [ACTION] Drag an object whithin the zone limits (only lights for now)
+    /// </summary>
     private void Drag()
     {
         MobileLight mobileLight = GetClosestLight();
 
         if (IsInActionRange(mobileLight.gameObject))
         {
-            //Debug.Log("Drag input detected and mobile light found");
-
             m_isDragging = true;
-            mobileLight.DragTowards(this.transform.position);
+            mobileLight.DragTowards(transform.position);
         }
         else
         {
@@ -129,6 +140,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if there are lights around the player
+    /// </summary>
+    /// <returns>The closest light</returns>
     private MobileLight GetClosestLight()
     {
         float minDist = Mathf.Infinity;
@@ -138,7 +153,7 @@ public class Player : MonoBehaviour
         {
             float dist = (moblight.transform.position - transform.position).magnitude;
 
-            if(dist < minDist)
+            if (dist < minDist)
             {
                 minDist = dist;
                 closestLight = moblight;
@@ -148,6 +163,10 @@ public class Player : MonoBehaviour
         return closestLight;
     }
 
+    /// <summary>
+    /// Coroutine to reset the teleport capability of the player (avoiding infinite teleportation)
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator resetTeleport()
     {
         Debug.Log("Reseting teleportation...");

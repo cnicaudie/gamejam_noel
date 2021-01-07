@@ -6,10 +6,11 @@ public class Portal : MonoBehaviour
 {
     //==========// ATTRIBUTES //==========//
 
-    // PUBLIC
+    // PORTALS IN/OUT
     public Plane m_portalIn;
     public Plane m_portalOut;
 
+    // PLAYER
     public Player m_player;
 
     //==========// METHODS //==========//
@@ -21,7 +22,7 @@ public class Portal : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TP REQUEST : " + other.name);
+        Debug.Log("TP REQUEST FROM : " + other.name);
 
         if (m_player.m_CanTeleport)
         {
@@ -29,7 +30,10 @@ public class Portal : MonoBehaviour
         }
     }
 
-    public void TakePortal()
+    /// <summary>
+    /// Teleports the player to the out portal
+    /// </summary>
+    private void TakePortal()
     {
 
         if (m_portalIn.IsInZone(m_player.transform.position))

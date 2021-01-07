@@ -27,11 +27,6 @@ public class Axis : Zone
         return Vector3.Project(position, transform.right);
     }
 
-    /// <summary>
-    /// Checks if the given position is respecting the zone's condition (i.e. whether the position is in the zone)
-    /// </summary>
-    /// <param name="position">Position to check</param>
-    /// <returns>true if the position belongs to the zone, false otherwise</returns>
     public override bool IsInZone(Vector3 position)
     {
         m_axisVector = ProjectOnZoneSpace(position - this.transform.position);

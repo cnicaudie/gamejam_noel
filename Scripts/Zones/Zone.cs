@@ -5,10 +5,17 @@ using UnityEngine;
 
 public abstract class Zone : MonoBehaviour
 {
+    //==========// METHODS //==========//
+
     public Zone()
     {
     }
 
+    /// <summary>
+    /// Checks if the given position is respecting the zone's condition (i.e. whether the position is in the zone)
+    /// </summary>
+    /// <param name="position">Position to check</param>
+    /// <returns>true if the position belongs to the zone, false otherwise</returns>
     public abstract bool IsInZone(Vector3 position);
 
     /// <summary>
