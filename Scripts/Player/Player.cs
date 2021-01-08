@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public static Player m_instance; // singleton instance
 
     // PRIVATE
-    private float m_actionRange = 3;
+    private float m_actionRange = 5;
     private bool m_resetingTeleport = false;
 
     [SerializeField]
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
         set { m_canTeleport = value; }
     }
 
+    public bool IsAlive { get; set; }
+
     //==========// METHODS //==========//
 
     void Awake()
@@ -40,35 +42,44 @@ public class Player : MonoBehaviour
         MakePlayerSingleton();
     }
 
+    private void Start()
+    {
+        IsAlive = true;
+    }
+
     void Update()
     {
-        // Press space to turn on/off a light ball
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (IsAlive)
         {
-            Light();
-        }
+            // Press space to turn on/off a light ball
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Light();
+            }
 
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            Drag();
-        }
-        else if (Input.GetKeyUp(KeyCode.Mouse1))
-        {
-            m_isDragging = false;
-        }
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                Drag();
+            }
+            else if (Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                m_isDragging = false;
+            }
 
-        if (!m_canTeleport && !m_resetingTeleport)
-        {
-            m_resetingTeleport = true;
-            StartCoroutine("resetTeleport");
-        }
+            if (!m_canTeleport && !m_resetingTeleport)
+            {
+                m_resetingTeleport = true;
+                StartCoroutine("resetTeleport");
+            }
 
-        if (m_isDragging)
-        {
-            m_Speed = 5f; // when the player is dragging, he slows a bit down
-        } else
-        {
-            m_Speed = 10f; // as soon as he can't drag, he gets its speed back
+            if (m_isDragging)
+            {
+                m_Speed = 5f; // when the player is dragging, he slows a bit down
+            }
+            else
+            {
+                m_Speed = 10f; // as soon as he doesn't drag, he gets its speed back
+            }
         }
     }
 
