@@ -146,6 +146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_viewRange: 50
-  m_actionRange: 1
+  m_actionRange: 3
   attackEffect: {fileID: 3442581599493634330, guid: f7a7002d0a0b69e439790690008e94b4,
     type: 3}

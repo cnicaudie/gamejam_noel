@@ -25,7 +25,7 @@ public class Monster : MonoBehaviour
         m_startRot = transform.rotation;
         m_player = FindObjectOfType<Player>();
         m_viewRange = 50;
-        m_actionRange = 10;
+        m_actionRange = 3;
         m_agent = GetComponent<NavMeshAgent>();
         m_patience = 2.0f;
     }
@@ -136,6 +136,7 @@ public class Monster : MonoBehaviour
         {
             StartCoroutine(KillPlayer());
         }
+        m_agent.velocity = Vector3.zero;
     }
 
     public IEnumerator KillPlayer()
