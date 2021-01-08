@@ -16,7 +16,7 @@ public class Monster : MonoBehaviour
     float m_timer;
     float m_patience;
 
-    public GameObject TargetIndicator;
+    //public GameObject TargetIndicator;
 
     public GameObject attackEffect;
 
@@ -81,7 +81,7 @@ public class Monster : MonoBehaviour
 
         //Debug.Log("Velocity : " + m_agent.velocity.magnitude);
         //Debug.Log("PathSatus : " + m_agent.pathStatus);
-        TargetIndicator.transform.position = m_agent.destination + new Vector3(0.0f, 1.0f, 0.0f);
+        //TargetIndicator.transform.position = m_agent.destination + new Vector3(0.0f, 1.0f, 0.0f);
     }
 
     public bool isPlayerInLOS()
@@ -112,7 +112,7 @@ public class Monster : MonoBehaviour
         else
         {
             Debug.DrawRay(transform.position, (playerPos - transform.position).normalized * 1000, Color.red);
-            Debug.Log("Did not Hit");
+            //Debug.Log("Did not Hit");
             return false;
         }
     }

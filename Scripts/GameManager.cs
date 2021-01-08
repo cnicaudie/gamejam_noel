@@ -8,43 +8,53 @@ public class GameManager : MonoBehaviour
     //==========// ATTRIBUTES //==========//
 
     // PUBLIC
-    public static GameManager m_instance; // singleton instance
+    public static GameManager s_instance; // singleton instance
+
+    public static bool s_isInMenu = true;
+    public const int k_maxLevels = 10;
 
     // PRIVATE
     private Player m_player;
 
+    // Puzzle mode = we play one level at a time
+    // (and then choose a next level from the unlocked ones)
+    // If puzzle mode = false, then we play every levels in order
+    private bool m_puzzleMode = true;
+
     // PROPERTIES
-    [SerializeField] private bool m_hasLevelEnded = false;
-    public bool m_HasLevelEnded {
-        get { return m_hasLevelEnded; }
-        set { m_hasLevelEnded = value; }
+    private bool hasLevelEnded = false;
+    public bool HasLevelEnded {
+        get { return hasLevelEnded; }
+        set { hasLevelEnded = value; }
     }
 
-    private bool m_isInMenu = true;
+    [SerializeField]
+    private int currentLevel = 0;
+    public int CurrentLevel
+    {
+        get { return currentLevel; }
+        set { currentLevel = value; }
+    }
 
-    // true : we play one level (and then back to menu)
-    // false : we play every levels 
-    private bool m_levelMode = true; 
 
     //==========// METHODS //==========//
 
     void Awake()
     {
         MakeGameSingleton();
-
-        if (!m_isInMenu)
-        {
-            m_player = FindObjectOfType<Player>();
-            m_player.SetToBasePosition();
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_HasLevelEnded)
+        if (HasLevelEnded)
         {
             LoadNextLevel();
+        }
+
+        if (!s_isInMenu && Input.GetKeyDown(KeyCode.M))
+        {
+            LoadMainMenu();
         }
     }
 
@@ -53,70 +63,46 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void MakeGameSingleton()
     {
-        if (m_instance != null)
+        if (s_instance != null)
         {
             Destroy(gameObject); // if there is a second instance, we delete it
         }
         else
         {
-            m_instance = this;
+            s_instance = this;
             DontDestroyOnLoad(gameObject); // we keep the instance through each scene
         }
     }
 
-
-    public void StartGame()
+    public void LoadMainMenu()
     {
-        LoadLevel(0); // put 1 later
+        s_isInMenu = true;
+        SceneManager.LoadScene("Main_Menu");
     }
 
-    public void LevelMenu()
+    public void LoadLevel(string levelName)
     {
-        SceneManager.LoadScene("Level_Menu");
-    }
+        Debug.Log("Loading " + levelName + "...");
 
-    public void SettingsMenu()
-    {
-        // TODO
-    }
+        s_isInMenu = false;
+        SceneManager.LoadScene(levelName);
 
-    public void CreditsPage()
-    {
-        // TODO
-    }
+        Debug.Log(levelName + " was successfully loaded !");
 
-    private void LoadLevel(int levelNumber)
-    {
-        Debug.Log("Loading next level...");
+        HasLevelEnded = false;
 
-        if (levelNumber == 0)
+        if (m_player == null)
         {
-            SceneManager.LoadScene("TestLevel");
+            m_player = FindObjectOfType<Player>();
         }
-        else
-        {
-            SceneManager.LoadScene("Level_" + levelNumber);
-        }
-
-        Debug.Log(SceneManager.GetActiveScene().name + " was successfully loaded !");
-
-        m_isInMenu = false;
-        m_HasLevelEnded = false;
-        m_player.SetToBasePosition();
     }
 
     /// <summary>
-    /// Loads the next level in the build settings
+    /// Loads the next level
     /// </summary>
     private void LoadNextLevel()
     {
-        Debug.Log("Loading next level...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
-        // Change for the following line when new levels will be implemented 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Debug.Log(SceneManager.GetActiveScene().name + " was successfully loaded !");
-
-        m_HasLevelEnded = false;
-        m_player.SetToBasePosition();
+        currentLevel++;
+        LoadLevel("Level_" + currentLevel);
     }
 }

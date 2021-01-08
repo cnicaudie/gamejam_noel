@@ -44,12 +44,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        SetToBasePosition();
         IsAlive = true;
     }
 
     void Update()
     {
-        if (IsAlive)
+        if (IsAlive && !GameManager.s_isInMenu)
         {
             // Press space to turn on/off a light ball
             if (Input.GetKeyDown(KeyCode.Space))
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
                 m_Speed = 10f; // as soon as he doesn't drag, he gets its speed back
             }
         }
+
     }
 
     /// <summary>
@@ -97,6 +99,7 @@ public class Player : MonoBehaviour
             m_instance = this;
             DontDestroyOnLoad(gameObject); // we keep the instance through each scene
         }
+
     }
 
     /// <summary>
@@ -185,5 +188,4 @@ public class Player : MonoBehaviour
         m_resetingTeleport = false;
         m_canTeleport = true;
     }
-
 }
