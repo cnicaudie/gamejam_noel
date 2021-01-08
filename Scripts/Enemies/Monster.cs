@@ -16,6 +16,8 @@ public class Monster : MonoBehaviour
     float m_timer;
     float m_patience;
 
+    public GameObject TargetIndicator;
+
     public GameObject attackEffect;
 
     // Start is called before the first frame update
@@ -45,14 +47,10 @@ public class Monster : MonoBehaviour
         if (isPlayerInLOS())
         {
             m_agent.SetDestination(m_player.transform.position);
-
-        }else if(m_agent.velocity.magnitude <= 0.01)
-        {
-            m_agent.SetDestination(m_startPos);
+            // Reset timer if there is a path to destination
+            if (m_agent.pathStatus == NavMeshPathStatus.PathComplete) m_timer = 0;
         }
-
-        // Reset timer if there is a path to destination
-        if (m_agent.pathStatus == NavMeshPathStatus.PathComplete) m_timer = 0;
+        else if(m_agent.pathStatus == NavMeshPathStatus.PathComplete && m_agent.remainingDistance > 0.1f) m_timer = 0;
 
         // Timer update 
         m_timer += Time.fixedDeltaTime;
@@ -62,7 +60,7 @@ public class Monster : MonoBehaviour
         {
             m_timer = 0;
             m_agent.SetDestination(m_startPos);
-        }
+        } 
 
         // Resting rotation after returning to start position
         if (m_agent.destination.x == m_startPos.x && m_agent.destination.z == m_startPos.z && m_agent.remainingDistance < 0.1f)
@@ -83,6 +81,7 @@ public class Monster : MonoBehaviour
 
         //Debug.Log("Velocity : " + m_agent.velocity.magnitude);
         //Debug.Log("PathSatus : " + m_agent.pathStatus);
+        TargetIndicator.transform.position = m_agent.destination + new Vector3(0.0f, 1.0f, 0.0f);
     }
 
     public bool isPlayerInLOS()
@@ -166,4 +165,29 @@ public class Monster : MonoBehaviour
         }
         GameObject.Destroy(effect);
     }
+
+    /*public IEnumerator LookAroundAnimation(float time)
+    {
+        var tempAng = m_agent.angularSpeed;
+        m_agent.angularSpeed = 0;
+        float timer = 0;
+
+        Quaternion rightRotation = Quaternion.LookRotation((transform.forward + transform.right).normalized);
+        Quaternion leftRotation = Quaternion.LookRotation((transform.forward - transform.right).normalized);
+
+        while (timer < time / 3.0f)
+        {
+            m_agent.transform.rotation = Quaternion.RotateTowards(transform.rotation, rightRotation, 1.0f);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        while(timer < time)
+        {
+            m_agent.transform.rotation = Quaternion.RotateTowards(transform.rotation, leftRotation, 1.0f);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        m_agent.angularSpeed = tempAng;
+    }*/
+    
 }

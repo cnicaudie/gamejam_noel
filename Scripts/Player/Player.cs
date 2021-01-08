@@ -139,8 +139,7 @@ public class Player : MonoBehaviour
     private void Drag()
     {
         MobileLight mobileLight = GetClosestLight();
-
-        if (IsInActionRange(mobileLight.gameObject))
+        if (mobileLight != null && IsInActionRange(mobileLight.gameObject))
         {
             m_isDragging = true;
             mobileLight.DragTowards(transform.position);
