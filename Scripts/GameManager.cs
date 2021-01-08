@@ -20,14 +20,23 @@ public class GameManager : MonoBehaviour
         set { m_hasLevelEnded = value; }
     }
 
+    private bool m_isInMenu = true;
+
+    // true : we play one level (and then back to menu)
+    // false : we play every levels 
+    private bool m_levelMode = true; 
+
     //==========// METHODS //==========//
 
     void Awake()
     {
         MakeGameSingleton();
 
-        m_player = FindObjectOfType<Player>();
-        m_player.SetToBasePosition();
+        if (!m_isInMenu)
+        {
+            m_player = FindObjectOfType<Player>();
+            m_player.SetToBasePosition();
+        }
     }
 
     // Update is called once per frame
@@ -53,6 +62,47 @@ public class GameManager : MonoBehaviour
             m_instance = this;
             DontDestroyOnLoad(gameObject); // we keep the instance through each scene
         }
+    }
+
+
+    public void StartGame()
+    {
+        LoadLevel(0); // put 1 later
+    }
+
+    public void LevelMenu()
+    {
+        SceneManager.LoadScene("Level_Menu");
+    }
+
+    public void SettingsMenu()
+    {
+        // TODO
+    }
+
+    public void CreditsPage()
+    {
+        // TODO
+    }
+
+    private void LoadLevel(int levelNumber)
+    {
+        Debug.Log("Loading next level...");
+
+        if (levelNumber == 0)
+        {
+            SceneManager.LoadScene("TestLevel");
+        }
+        else
+        {
+            SceneManager.LoadScene("Level_" + levelNumber);
+        }
+
+        Debug.Log(SceneManager.GetActiveScene().name + " was successfully loaded !");
+
+        m_isInMenu = false;
+        m_HasLevelEnded = false;
+        m_player.SetToBasePosition();
     }
 
     /// <summary>
