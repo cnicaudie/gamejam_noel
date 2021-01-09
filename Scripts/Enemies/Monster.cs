@@ -141,11 +141,8 @@ public class Monster : MonoBehaviour
     public IEnumerator KillPlayer()
     {
         m_player.IsAlive = false;
-        var temp = m_player.m_Speed;
-        m_player.m_Speed = 0;
         StartCoroutine(KillAnimation(1.5f, 1.0f, 4.0f));
         yield return new WaitForSeconds(1.5f);
-        m_player.m_Speed = temp;
         m_player.SetToBasePosition();
         m_player.IsAlive = true;
     }

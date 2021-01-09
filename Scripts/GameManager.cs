@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     // PRIVATE
     private Player m_player;
-
+    
     // Puzzle mode = we play one level at a time
     // (and then choose a next level from the unlocked ones)
     // If puzzle mode = false, then we play every levels in order
@@ -74,27 +74,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the Main menu scene
+    /// </summary>
     public void LoadMainMenu()
     {
         s_isInMenu = true;
         SceneManager.LoadScene("Main_Menu");
     }
 
+
+    /// <summary>
+    /// Loads a level from its name
+    /// </summary>
+    /// <param name="levelName">Name of the level</param>
     public void LoadLevel(string levelName)
     {
+        s_isInMenu = false;
+
         Debug.Log("Loading " + levelName + "...");
 
-        s_isInMenu = false;
         SceneManager.LoadScene(levelName);
 
         Debug.Log(levelName + " was successfully loaded !");
 
         HasLevelEnded = false;
-
-        if (m_player == null)
-        {
-            m_player = FindObjectOfType<Player>();
-        }
+        m_player = FindObjectOfType<Player>();
     }
 
     /// <summary>
@@ -102,7 +107,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void LoadNextLevel()
     {
-        currentLevel++;
+        // TODO : Uncomment when we have more levels
+        //currentLevel++;
         LoadLevel("Level_" + currentLevel);
     }
 }

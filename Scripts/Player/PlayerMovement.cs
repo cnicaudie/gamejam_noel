@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (m_player.IsAlive && !GameManager.s_isInMenu)
+        if (m_player.IsAlive)
         {
             // We get the horizontal and vertical move (arrow keys and/or see project settings)
             m_horizontalMove = Input.GetAxisRaw("Horizontal");

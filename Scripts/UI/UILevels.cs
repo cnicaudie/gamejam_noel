@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UILevels : MonoBehaviour
 {
+    //==========// ATTRIBUTES //==========//
 
-    [SerializeField]
-    private GameObject m_buttonTemplate;
+    // PRIVATE
+    [SerializeField] private GameObject m_buttonTemplate;
+
+    //==========// METHODS //==========//
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,12 @@ public class UILevels : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instantiates a new button based on the template button
+    /// </summary>
+    /// <param name="buttonName">Name of the button's Game Object</param>
+    /// <param name="buttonText">Text of the button</param>
+    /// <param name="index">Index of the button</param>
     private void InstantiateNewButton(string buttonName, string buttonText, int index)
     {
         GameObject button = Instantiate(m_buttonTemplate) as GameObject;
