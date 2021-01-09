@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField]
-    private int currentLevel = 0;
+    private int currentLevel = 1;
     public int CurrentLevel
     {
         get { return currentLevel; }
@@ -49,7 +49,14 @@ public class GameManager : MonoBehaviour
     {
         if (HasLevelEnded)
         {
-            LoadNextLevel();
+            if (m_puzzleMode)
+            {
+                LoadIntermediateMenu();
+            }
+            else
+            {
+                LoadNextLevel();
+            }
         }
 
         if (!s_isInMenu && Input.GetKeyDown(KeyCode.M))
@@ -91,6 +98,7 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(string levelName)
     {
         s_isInMenu = false;
+        HasLevelEnded = false;
 
         Debug.Log("Loading " + levelName + "...");
 
@@ -98,17 +106,34 @@ public class GameManager : MonoBehaviour
 
         Debug.Log(levelName + " was successfully loaded !");
 
-        HasLevelEnded = false;
         m_player = FindObjectOfType<Player>();
+    }
+
+    /// <summary>
+    /// Reloads the current level
+    /// </summary>
+    public void ReloadLevel()
+    {
+        LoadLevel("Level_" + currentLevel);
     }
 
     /// <summary>
     /// Loads the next level
     /// </summary>
-    private void LoadNextLevel()
+    public void LoadNextLevel()
     {
         // TODO : Uncomment when we have more levels
         //currentLevel++;
-        LoadLevel("Level_" + currentLevel);
+        ReloadLevel();
+    }
+
+    /// <summary>
+    /// Loads the intermediate menu
+    /// </summary>
+    private void LoadIntermediateMenu()
+    {
+        s_isInMenu = true;
+        HasLevelEnded = false;
+        SceneManager.LoadScene("Intermediate_Menu");
     }
 }

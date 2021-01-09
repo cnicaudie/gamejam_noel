@@ -26,11 +26,12 @@ public class UIManager : MonoBehaviour
         //puzzleMode = false;
 
         GameManager.s_isInMenu = false;
-        m_gameManager.LoadLevel("TestLevel"); // TODO : To change for "Level_1"
+        m_gameManager.CurrentLevel = 1;
+        m_gameManager.LoadLevel("Level_1");
     }
 
     /// <summary>
-    /// Method to display the main menu
+    /// Displays the main menu
     /// </summary>
     public void LevelMenu()
     {
@@ -39,7 +40,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Method to display the settings menu
+    /// Displays the settings menu
     /// </summary>
     public void SettingsMenu()
     {
@@ -47,7 +48,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Method to display the credits page
+    /// Displays the credits page
     /// </summary>
     public void CreditsPage()
     {
@@ -55,7 +56,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Method to display the main menu
+    /// Displays the main menu
     /// </summary>
     public void MainMenu()
     {
@@ -63,4 +64,19 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("Main_Menu");
     }
 
+    /// <summary>
+    /// Loads the just played level
+    /// </summary>
+    public void TryAgain()
+    {
+        m_gameManager.ReloadLevel();
+    }
+
+    /// <summary>
+    /// Loads the next level
+    /// </summary>
+    public void NextLevel()
+    {
+        m_gameManager.LoadNextLevel();
+    }
 }
