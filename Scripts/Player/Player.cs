@@ -7,10 +7,9 @@ public class Player : MonoBehaviour
     //==========// ATTRIBUTES //==========//
 
     // PRIVATE
+    private GameManager m_gameManager;
     private float m_actionRange = 5;
     private bool m_resetingTeleport = false;
-
-    [SerializeField]
     private bool m_isDragging = false;
 
     // PROPERTIES
@@ -31,18 +30,21 @@ public class Player : MonoBehaviour
     }
 
     public bool IsAlive { get; set; }
+    public bool IsDying { get; set; }
 
     //==========// METHODS //==========//
 
     private void Start()
     {
-        SetToBasePosition();
+        m_gameManager = FindObjectOfType<GameManager>();
         IsAlive = true;
+        IsDying = false;
+        SetToBasePosition();
     }
 
     void Update()
     {
-        if (IsAlive)
+        if (IsAlive && !IsDying)
         {
             // Press space to turn on/off a light ball
             if (Input.GetKeyDown(KeyCode.Space))
@@ -73,6 +75,10 @@ public class Player : MonoBehaviour
             {
                 m_Speed = 10f; // as soon as he doesn't drag, he gets its speed back
             }
+        }
+        else if (!IsAlive)
+        {
+            m_gameManager.ReloadLevel();
         }
 
     }

@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (m_player.IsAlive)
+        if (m_player.IsAlive && !m_player.IsDying)
         {
             // We get the horizontal and vertical move (arrow keys and/or see project settings)
             m_horizontalMove = Input.GetAxisRaw("Horizontal");

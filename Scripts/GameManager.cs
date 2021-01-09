@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     public static bool s_isInMenu = true;
     public const int k_maxLevels = 10;
 
-    // PRIVATE
-    private Player m_player;
-    
     // Puzzle mode = we play one level at a time
     // (and then choose a next level from the unlocked ones)
     // If puzzle mode = false, then we play every levels in order
@@ -105,8 +102,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(levelName);
 
         Debug.Log(levelName + " was successfully loaded !");
-
-        m_player = FindObjectOfType<Player>();
     }
 
     /// <summary>
