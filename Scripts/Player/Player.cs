@@ -6,9 +6,6 @@ public class Player : MonoBehaviour
 {
     //==========// ATTRIBUTES //==========//
 
-    // PUBLIC
-    public static Player m_instance; // singleton instance
-
     // PRIVATE
     private float m_actionRange = 5;
     private bool m_resetingTeleport = false;
@@ -37,11 +34,6 @@ public class Player : MonoBehaviour
 
     //==========// METHODS //==========//
 
-    void Awake()
-    {
-        MakePlayerSingleton();
-    }
-
     private void Start()
     {
         SetToBasePosition();
@@ -50,7 +42,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (IsAlive && !GameManager.s_isInMenu)
+        if (IsAlive)
         {
             // Press space to turn on/off a light ball
             if (Input.GetKeyDown(KeyCode.Space))
@@ -81,23 +73,6 @@ public class Player : MonoBehaviour
             {
                 m_Speed = 10f; // as soon as he doesn't drag, he gets its speed back
             }
-        }
-
-    }
-
-    /// <summary>
-    /// Makes sure the Player is a singleton in the whole game
-    /// </summary>
-    private void MakePlayerSingleton()
-    {
-        if (m_instance != null)
-        {
-            Destroy(gameObject); // if there is a second instance, we delete it
-        }
-        else
-        {
-            m_instance = this;
-            DontDestroyOnLoad(gameObject); // we keep the instance through each scene
         }
 
     }
