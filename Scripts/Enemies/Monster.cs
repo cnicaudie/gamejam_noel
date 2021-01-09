@@ -60,6 +60,7 @@ public class Monster : MonoBehaviour
         {
             m_timer = 0;
             m_agent.SetDestination(m_startPos);
+            Debug.Log("Timer was reset");
         } 
 
         // Resting rotation after returning to start position
