@@ -26,23 +26,26 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // We get the horizontal and vertical move (arrow keys and/or see project settings)
-        m_horizontalMove = Input.GetAxisRaw("Horizontal");
-        m_verticalMove = Input.GetAxisRaw("Vertical");
-
-        // If the player is grounded, no need to apply gravity
-        if (m_playerController.isGrounded)
+        if (m_player.IsAlive)
         {
-            m_gSpeed = 0f;
-        }
-        // Otherwise, we apply gravity
-        else
-        {
-            m_gSpeed -= m_gravity * Time.fixedDeltaTime; // apply gravity acceleration to speed:
-        }
+            // We get the horizontal and vertical move (arrow keys and/or see project settings)
+            m_horizontalMove = Input.GetAxisRaw("Horizontal");
+            m_verticalMove = Input.GetAxisRaw("Vertical");
 
-        // Computes the player movement
-        MovePlayer();
+            // If the player is grounded, no need to apply gravity
+            if (m_playerController.isGrounded)
+            {
+                m_gSpeed = 0f;
+            }
+            // Otherwise, we apply gravity
+            else
+            {
+                m_gSpeed -= m_gravity * Time.fixedDeltaTime; // apply gravity acceleration to speed:
+            }
+
+            // Computes the player movement
+            MovePlayer();
+        }
     }
 
     /// <summary>

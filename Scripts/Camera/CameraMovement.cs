@@ -37,6 +37,9 @@ public class CameraMovement : MonoBehaviour
         transform.LookAt(m_player);
     }
 
+    /// <summary>
+    /// Rotates the camera around the player based on the mouse position
+    /// </summary>
     private void CameraRotation()
     {
         // From : https://www.youtube.com/watch?v=xcn7hz7J7sI&t=24s&ab_channel=Jayanam

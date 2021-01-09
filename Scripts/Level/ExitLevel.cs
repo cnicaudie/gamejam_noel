@@ -19,6 +19,6 @@ public class ExitLevel : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name + " has found the exit !");
-        m_gameManager.m_HasLevelEnded = true;
+        m_gameManager.HasLevelEnded = true;
     }
 }
